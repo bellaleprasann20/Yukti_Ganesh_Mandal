@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  /* Define your custom saffron color palette for Tailwind v4 */
+  --color-saffron-50: #fff9f2;
+  --color-saffron-100: #ffeed6;
+  --color-saffron-200: #ffd8a8;
+  --color-saffron-300: #ffbc75;
+  --color-saffron-400: #ffa047;
+  --color-saffron-500: #ff8014; /* Core saffron shade */
+  --color-saffron-600: #e66700;
+}
+
+/* Any other global styles or custom utility classes can go below */
+.section-label {
+  @apply text-xs uppercase tracking-widest font-semibold text-saffron-500 mb-2 block;
+}
+
+.section-title {
+  @apply text-2xl sm:text-3xl font-extrabold text-gray-900 mb-4;
+}
