@@ -69,7 +69,7 @@ export default function Footer() {
             {/* Social */}
             <div className="flex gap-4 mt-6">
               {/* Instagram SVG Alternative */}
-              <a href="https://instagram.com" target="_blank" rel="noreferrer"
+              <a href="https://www.instagram.com/shree_yukti_ganeshmandal/" target="_blank" rel="noreferrer"
                 className="w-9 h-9 rounded-lg bg-gray-800 flex items-center justify-center hover:bg-saffron-400 text-gray-300 hover:text-gray-900 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
