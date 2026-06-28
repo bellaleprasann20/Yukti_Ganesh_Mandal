@@ -228,10 +228,15 @@ function TermsModal({ tier, onAccept, onClose }) {
   );
 }
 
+// ── Detect mobile device ─────────────────────────────────────
+const isMobile = () =>
+  /Android|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i.test(navigator.userAgent);
+
 // ── Payment Modal ─────────────────────────────────────────────
 function PaymentModal({ tier, onClose }) {
-  const [copied, setCopied] = useState("");
+  const [copied,       setCopied]       = useState("");
   const [customAmount, setCustomAmount] = useState(tier.raw);
+  const mobile = isMobile();
 
   const handleCopy = (value) => {
     navigator.clipboard.writeText(value);
@@ -242,10 +247,10 @@ function PaymentModal({ tier, onClose }) {
   const upiParams = `pa=${UPI_ID}&pn=Yukti+Ganesh+Mandal&am=${customAmount}&cu=INR&tn=Ganesh+Chaturthi+Donation`;
 
   const paymentApps = [
-    { name: "Google Pay", Icon: GPay,    bg: "hover:bg-blue-50 hover:border-blue-300",   url: `gpay://upi/pay?${upiParams}` },
-    { name: "PhonePe",    Icon: PhonePe, bg: "hover:bg-purple-50 hover:border-purple-300", url: `phonepe://pay?${upiParams}` },
-    { name: "Paytm",      Icon: Paytm,   bg: "hover:bg-cyan-50 hover:border-cyan-300",    url: `paytmmp://pay?${upiParams}` },
-    { name: "BHIM UPI",   Icon: BHIM,    bg: "hover:bg-green-50 hover:border-green-300",  url: `upi://pay?${upiParams}` },
+    { name: "Google Pay", Icon: GPay,    bg: "hover:bg-blue-50 hover:border-blue-300",    url: `gpay://upi/pay?${upiParams}`  },
+    { name: "PhonePe",    Icon: PhonePe, bg: "hover:bg-purple-50 hover:border-purple-300", url: `phonepe://pay?${upiParams}`   },
+    { name: "Paytm",      Icon: Paytm,   bg: "hover:bg-cyan-50 hover:border-cyan-300",     url: `paytmmp://pay?${upiParams}`  },
+    { name: "BHIM UPI",   Icon: BHIM,    bg: "hover:bg-green-50 hover:border-green-300",   url: `upi://pay?${upiParams}`      },
   ];
 
   const handleAppClick = (url) => {
@@ -291,22 +296,48 @@ function PaymentModal({ tier, onClose }) {
             <p className="text-xs text-red-700 font-medium">This donation is non-refundable once paid.</p>
           </div>
 
-          {/* Apps */}
-          <div>
-            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Pay instantly via UPI app</p>
-            <div className="grid grid-cols-2 gap-3">
-              {paymentApps.map(({ name, Icon, bg, url }) => (
-                <button
-                  key={name}
-                  onClick={() => handleAppClick(url)}
-                  className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 border-gray-100 bg-white font-semibold text-sm text-gray-800 transition-all active:scale-95 ${bg}`}
-                >
-                  <Icon />
-                  <span>{name}</span>
-                </button>
-              ))}
+          {/* MOBILE → show app buttons | DESKTOP → show QR code */}
+          {mobile ? (
+            <div>
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
+                Pay instantly via UPI app
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                {paymentApps.map(({ name, Icon, bg, url }) => (
+                  <button
+                    key={name}
+                    onClick={() => handleAppClick(url)}
+                    className={`flex items-center gap-3 px-4 py-3.5 rounded-2xl border-2 border-gray-100 bg-white font-semibold text-sm text-gray-800 transition-all active:scale-95 ${bg}`}
+                  >
+                    <Icon />
+                    <span>{name}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="bg-saffron-50 border border-saffron-200 rounded-2xl p-5 text-center">
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
+                📱 Scan &amp; Pay on your Phone
+              </p>
+              <img
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?${encodeURIComponent(upiParams)}`}
+                alt="UPI QR Code"
+                className="mx-auto rounded-xl border-4 border-white shadow-md mb-3"
+                width={180}
+                height={180}
+              />
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Open <strong>GPay / PhonePe / Paytm / BHIM</strong> on your phone
+                <br />and scan this QR to pay <strong className="text-saffron-600">₹{customAmount}</strong>
+              </p>
+              <div className="mt-3 flex items-center gap-2 justify-center bg-yellow-50 border border-yellow-200 rounded-xl px-3 py-2">
+                <p className="text-xs text-yellow-700">
+                  ⚠️ UPI app buttons only work on <strong>mobile phones</strong>
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* UPI ID */}
           <div className="bg-gray-50 rounded-2xl p-4">

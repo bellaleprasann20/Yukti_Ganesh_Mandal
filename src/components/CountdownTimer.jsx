@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import FadeIn from "./FadeIn";
 
 // 🗓️ Ganesh Chaturthi 2026 — 14 September 2026, 7:00 AM IST
@@ -133,18 +134,18 @@ export default function CountdownTimer() {
 
           {/* CTA */}
           <div className="flex flex-wrap justify-center gap-3">
-            <a
-              href="/events"
+            <NavLink
+              to="/events"
               className="px-6 py-3 rounded-xl bg-white text-saffron-600 font-bold text-sm hover:bg-saffron-50 transition-colors shadow-md"
             >
               View All Events →
-            </a>
-            <a
-              href="/donations"
+            </NavLink>
+            <NavLink
+              to="/donations"
               className="px-6 py-3 rounded-xl border-2 border-white/50 text-white font-bold text-sm hover:bg-white/10 transition-colors"
             >
               🙏 Support Us
-            </a>
+            </NavLink>
           </div>
         </FadeIn>
       </div>
